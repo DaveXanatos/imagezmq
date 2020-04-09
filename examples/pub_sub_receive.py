@@ -36,14 +36,14 @@ import imagezmq
 # Create a "Place Holder" image to feed to the initially blank window
 test_img = np.zeros(shape=(300,400,3)).astype('uint8')
 # Create and open a window to display the received image stream
-# Note that in newer versions of OpenCV, teh imshow() window may apply
+# Note that in newer versions of OpenCV, the imshow() window may apply
 # a banner above the image and an image data window below the image.
 # This additional overhead can be removed using the WINDOW_GUI_NORMAL
 # flag as shown here.  If you want the image data, simply leave this flag
 # off of the code.
 cv2.namedWindow('IMAGE', cv2.WINDOW_GUI_NORMAL)
 cv2.imshow('IMAGE',test_img)
-cv2.moveWindow('IMAGE',125,0)
+cv2.moveWindow('IMAGE',125,0) # 125,0 is Horizontal, vertical window position
 cv2.waitKey(1)
 
 while True:  # press Ctrl-C to stop image display program
@@ -51,8 +51,9 @@ while True:  # press Ctrl-C to stop image display program
     image_name, jpg_buffer = image_hub.recv_jpg()
     image = cv2.imdecode(np.frombuffer(jpg_buffer, dtype='uint8'), -1)
     cv2.imshow('IMAGE', image)
-    cv2.waitKey(1)  # wait until a key is pressed
-
-
-
+    #cv2.waitKey(1)  # wait until a key is pressed
+    key = cv2.waitKey(1) & 0xFF
+    # if the `q` key was pressed, break from the loop
+    if key == ord("q"):
+        break
 
